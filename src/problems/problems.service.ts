@@ -7,12 +7,14 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProblemsService {
-  constructor(@InjectRepository(Problem) 
-  private problemRepository: Repository<Problem>) {}
-
+  constructor(
+    @InjectRepository(Problem)
+    private problemRepository: Repository<Problem>,
+  ) {}
 
   create(createProblemDto: CreateProblemDto) {
-    return this.problemRepository.save(createProblemDto)
+    const problem = this.problemRepository.save(createProblemDto);
+    return problem;
   }
 
   findAll() {
@@ -20,7 +22,7 @@ export class ProblemsService {
   }
 
   findOne(id: number) {
-    return this.problemRepository.findOneBy({id: id})
+    return this.problemRepository.findOneBy({ id: id });
   }
 
   // update(id: number, updateProblemDto: UpdateProblemDto) {
