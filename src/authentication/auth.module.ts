@@ -7,6 +7,9 @@ import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BoardMemberEntity } from './entities/boardmember';
+import { TenantEntity } from './entities/tenant';
 
 @Module({
   imports: [

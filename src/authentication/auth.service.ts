@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { UserEntity } from './entities/user';
+import { Role } from './roles/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -39,8 +41,21 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username /*, sub: user.userId*/ };
+  async login(user: UserEntity) {
+    let role = Role.User;
+    let payload: any = {
+      username: user.username,
+      id: user.id,
+      role: role,
+    };
+
+    if (user.tenant) {
+      payload.tenantId = user.tenant.id;
+    } else if (user.board) {
+      role = Role.Admin;
+      payload.boardId = user.board.id;
+    }
+
     return {
       access_token: this.jwtService.sign(payload),
     };

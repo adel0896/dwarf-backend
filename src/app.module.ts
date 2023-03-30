@@ -6,10 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BookingsModule } from './bookings/bookings.module';
 import { ProblemsModule } from './problems/problems.module';
 import { AuthModule } from './authentication/auth.module';
-import { Problem } from './problems/entities/problem.entity';
-import { UserEntity } from './authentication/entities/user';
-import { TenantEntity } from './authentication/entities/tenant';
-import { BoardMemberEntity } from './authentication/entities/boardmember';
+import { AuthController } from './authentication/auth.controller';
+import { AuthService } from './authentication/auth.service';
 
 @Module({
   imports: [

@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ProblemsService } from './problems.service';
 import { UsersService } from 'src/users/users.service';
 import { CreateProblemDto } from './dto/create-problem.dto';
 import { UpdateProblemDto } from './dto/update-problem.dto';
+import { JwtAuthGuard } from 'src/authentication/jwt-auth.guard';
+import { AdminGuard } from 'src/authentication/roles/admin.guard';
 
 @Controller('problems')
 export class ProblemsController {
@@ -26,8 +30,10 @@ export class ProblemsController {
     return this.problemsService.create(createProblemDto);
   }
 
+  @UseGuards(JwtAuthGuard, AdminGuard)
   @Get()
-  findAll() {
+  findAll(@Request() req: any) {
+    console.log('user/tenant in ctrl', req.user);
     return this.problemsService.findAll();
   }
 

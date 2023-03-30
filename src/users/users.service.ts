@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BoardMemberEntity } from 'src/authentication/entities/boardmember';
 import { TenantEntity } from 'src/authentication/entities/tenant';
 import { UserEntity } from 'src/authentication/entities/user';
+import { Role } from 'src/authentication/roles/role.enum';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -45,8 +46,12 @@ export class UsersService {
     name: string,
     email: string,
   ): Promise<TenantEntity> {
-    const user = await this.userRepository.save({ username, password });
-    const tenant = this.tenantRepository.save({ name, email, userId: user.id });
+    const user = await this.userRepository.save({
+      username,
+      password,
+      role: Role.User,
+    });
+    const tenant = this.tenantRepository.save({ name, email, user });
     return tenant;
   }
   async createBoardMember(
@@ -55,11 +60,15 @@ export class UsersService {
     name: string,
     phone: string,
   ): Promise<BoardMemberEntity> {
-    const user = await this.userRepository.save({ username, password });
+    const user = await this.userRepository.save({
+      username,
+      password,
+      role: Role.Admin,
+    });
     const boardMember = this.boardMemberRepository.save({
       name,
       phone,
-      userId: user.id,
+      user,
     });
     return boardMember;
   }
